@@ -1,0 +1,716 @@
+1.1: Data Query Language 
+1. List the Name and Designation code of the staff who have joined before Jan 2003 and whose salary range is between 12000 and 25000. Display the columns with user defined Column headers. Hint: Use As clause along with other operators 
+2. List the staff code, name, and department number of the staff who have experience of 18 or more years and sort them based on their experience.  
+3. Display the staff details who do not have manager. Hint: Use is null   
+4. Display the Book details that were published during the period of 2001 to 2004. Also display book details with Book name having the character ‘&’ anywhere. 
+5. List the names of the staff having ‘_’ character in their name.  
+
+
+
+
+SQL> connect casestudy
+Connected.
+SQL> create table emp
+  2  (
+  3  empno number(4) primary key,
+  4  ename varchar(10),
+  5  job varchar(9),
+  6  mgr number(4),
+  7  hiredate Date,
+  8  Sal number(7, 2),
+  9  comm number(7, 2),
+ 10  deptno number(2)
+ 11  );
+
+Table created.
+
+SQL> create table designation_master
+  2  {
+  3  ;
+{
+*
+ERROR at line 2:
+ORA-00911: invalid character 
+
+
+SQL> create table designation_master
+  2  (
+  3  design_code number(3) primary key,
+  4  design_name varchar(50)
+  5  );
+
+Table created.
+
+SQL> create table department_master
+  2  {
+  3  ;
+{
+*
+ERROR at line 2:
+ORA-00911: invalid character 
+
+
+SQL> create table department_master
+  2  (
+  3  dept_code number(2) primary key,
+  4  dpt_name varchar(50)
+  5  );
+
+Table created.
+
+SQL> create table student_master
+  2  (
+  3  student_code number(6) primary key,
+  4  student_name varchar(50) not null,
+  5  dept_code number(2),
+  6  student_dob Date,
+  7  student address varchar(240),
+  8  constraint fk_dep_std_master foreign key (dept_code)
+  9  references department_master(dept_code)
+ 10  );
+student address varchar(240),
+                *
+ERROR at line 7:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table student_master
+  2  (
+  3  student_code number(6) primary key,
+  4  student_name varchar(50) not null,
+  5  dept_code number(2),
+  6  student_dob Date,
+  7  student address varchar(240),
+  8  ;
+student address varchar(240),
+                *
+ERROR at line 7:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table student_master
+  2  (
+  3  student_code number(6) primary key,
+  4  student_name varchar(50) not null,
+  5  dept_code number(2),
+  6  student_dob Date,
+  7  student_address varchar(50);
+student_address varchar(50)
+                          *
+ERROR at line 7:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table student_master
+  2  (
+  3  student_code number(6) primary key,
+  4  student_name varchar(50) not null,
+  5  dept_code number(2),
+  6  student_dob Date,
+  7  student_address varchar(50)
+  8  );
+
+Table created.
+
+SQL> spool off;
+
+
+
+SQL> connect casestudy;
+Connected.
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID                               
+------------------------------ ------- ----------                               
+DEPARTMENT_MASTER              TABLE                                            
+DESIGNATION_MASTER             TABLE                                            
+EMP                            TABLE                                            
+STUDENT_MASTER                 TABLE                                            
+
+SQL> create table student_marks
+  2  (student_code number(6),
+  3  student_year number not null,
+  4  subject1 number(3
+  5  ), subject2 number(3),
+  6  subject3 number(3)
+  7  );
+
+Table created.
+
+SQL> create staff_master
+  2  (
+  3  staff_code number(8) not null,
+  4  staff_name varchar2(50) not null,
+  5  design_code number,
+  6  dept_code number,
+  7  hiredate date,
+  8  staff_dob Date,
+  9  staff_address varchar2(240),
+ 10  mgr_code number(8),
+ 11  staff_sal number(10, 2)
+ 12  );
+create staff_master
+       *
+ERROR at line 1:
+ORA-00901: invalid CREATE command 
+
+
+SQL> create table staff_master
+  2  (
+  3  staff_code number(8) not null,
+  4  staff_name varchar2(50) not null,
+  5  design_code number,
+  6  dept_code number,
+  7  hiredate Date,
+  8  staff_dob Date,
+  9  staff_address varchar2(240),
+ 10  mgr_code number(8),
+ 11  staff_sal number(10, 2)
+ 12  );
+
+Table created.
+
+SQL> create table book_master
+  2  (
+  3  book_code number(10) not null,
+  4  book_name varchar2(50) not null
+  5  );
+
+Table created.
+
+SQL> alter table book_master add column book_pub_year number;
+alter table book_master add column book_pub_year number
+                            *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> alter table book_master add book_pub_year number;
+
+Table altered.
+
+SQL> alter table book_master add book_pub_author varchar2(50) not null;
+
+Table altered.
+
+SQL> desc book_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_CODE                                 NOT NULL NUMBER(10)
+ BOOK_NAME                                 NOT NULL VARCHAR2(50)
+ BOOK_PUB_YEAR                                      NUMBER
+ BOOK_PUB_AUTHOR                           NOT NULL VARCHAR2(50)
+
+SQL> create table book_transactions
+  2  (
+  3  book_code number,
+  4  student_code number,
+  5  staff_code number,
+  6  book_issue_date Date not null,
+  7  book_expected_return_date Date not null,
+  8  book_actual_return_date Date
+  9  );
+
+Table created.
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID                               
+------------------------------ ------- ----------                               
+BOOK_MASTER                    TABLE                                            
+BOOK_TRANSACTIONS              TABLE                                            
+DEPARTMENT_MASTER              TABLE                                            
+DESIGNATION_MASTER             TABLE                                            
+EMP                            TABLE                                            
+STAFF_MASTER                   TABLE                                            
+STUDENT_MARKS                  TABLE                                            
+STUDENT_MASTER                 TABLE                                            
+
+8 rows selected.
+
+SQL> spool off;
+
+SQL> desc staff_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STAFF_CODE                                NOT NULL NUMBER(8)
+ STAFF_NAME                                NOT NULL VARCHAR2(50)
+ DESIGN_CODE                                        NUMBER
+ DEPT_CODE                                          NUMBER
+ HIREDATE                                           DATE
+ STAFF_DOB                                          DATE
+ STAFF_ADDRESS                                      VARCHAR2(240)
+ MGR_CODE                                           NUMBER(8)
+ STAFF_SAL                                          NUMBER(10,2)
+
+SQL> alter table staff_master
+  2  modify (staff_code, staff_name) primary kry;
+modify (staff_code, staff_name) primary kry
+                                *
+ERROR at line 2:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table staff_master
+  2  modify (staff_code, staff_name) primary key;
+modify (staff_code, staff_name) primary key
+                                *
+ERROR at line 2:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table staff_master
+  2  modify staff_code primary key;
+
+Table altered.
+
+SQL> desc staff_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STAFF_CODE                                NOT NULL NUMBER(8)
+ STAFF_NAME                                NOT NULL VARCHAR2(50)
+ DESIGN_CODE                                        NUMBER
+ DEPT_CODE                                          NUMBER
+ HIREDATE                                           DATE
+ STAFF_DOB                                          DATE
+ STAFF_ADDRESS                                      VARCHAR2(240)
+ MGR_CODE                                           NUMBER(8)
+ STAFF_SAL                                          NUMBER(10,2)
+
+SQL> insert into staff_master
+  2  (
+  3  101,
+  4  'Staff1',
+  5  1,
+  6  1,
+  7  '07-FEB-2020',
+  8  '21-JAN-1997',
+  9  'Delhi',
+ 10  1,
+ 11  15000
+ 12  );
+101,
+*
+ERROR at line 3:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into staff_master values(101, 'Sanchit', 1, 1, '07-JAN-2003', '21-MAR-1995', 'Delhi', 1, 15000);
+
+1 row created.
+
+SQL> insert into staff_master values(102, 'Piyush', 2, 2, '07-JAN-1980', '21-SEP-1998', 'Delhi', 2, 10000);
+
+1 row created.
+
+SQL> insert into staff_master values(103, 'Riya', 3, 3, '07-APR-2019', '21-MAR-1996', 'Mumbai', null, 150000);
+
+1 row created.
+
+SQL> select * from staff_master;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       101 Sanchit                                                      1       
+         1 07-JAN-03 21-MAR-95                                                  
+Delhi                                                                           
+         1      15000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       102 Piyush                                                       2       
+         2 07-JAN-80 21-SEP-98                                                  
+Delhi                                                                           
+         2      10000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+SQL> insert into staff_master values(104, 'Vatsal', 4, 4, '07-APR-2000', '21-MAR-1980', 'Pune', null, 25000);
+
+1 row created.
+
+SQL> insert into staff_master values(104, 'Vatsal', 4, 4, '07-APR-2000', '21-MAR-1980', 'Pune', null, 25000);
+insert into staff_master values(104, 'Vatsal', 4, 4, '07-APR-2000', '21-MAR-1980', 'Pune', null, 25000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (CASESTUDY.SYS_C007024) violated 
+
+
+SQL> select staff_name as name, design_code as designation from
+  2  staff_master where
+  3  hiredate < '01-JAN-2003' and
+  4  salary between(12000, 25000);
+salary between(12000, 25000)
+                    *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> select staff_name as name, design_code as designation from
+  2  staff_master where
+  3  hiredate < '01-JAN-2003' and
+  4  salary between 12000 and 25000;
+salary between 12000 and 25000
+*
+ERROR at line 4:
+ORA-00904: "SALARY": invalid identifier 
+
+
+SQL> select staff_name as name, design_code as designation from
+  2  staff_master where
+  3  hiredate < '01-JAN-2003' and
+  4  staff_sal between 12000 and 25000;
+
+NAME                                               DESIGNATION                  
+-------------------------------------------------- -----------                  
+Vatsal                                                       4                  
+
+SQL> select staff_code, staff_name, dept_code where
+  2  sysdate - hiredate >= 18;
+select staff_code, staff_name, dept_code where
+                                         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select staff_code, staff_name, dept_code where
+  2  sysdate - hiredate >= 18;
+select staff_code, staff_name, dept_code where
+                                         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select staff_code, staff_name, dept_code from staff_master where
+  2  sysdate - hiredate >= 18;
+
+STAFF_CODE STAFF_NAME                                          DEPT_CODE        
+---------- -------------------------------------------------- ----------        
+       101 Sanchit                                                     1        
+       102 Piyush                                                      2        
+       103 Riya                                                        3        
+       104 Vatsal                                                      4        
+
+SQL> select staff_code, staff_name, dept_code from staff_master where
+  2  sysdate - hiredate >= 18 order by(sysdate-hiredate) desc;
+
+STAFF_CODE STAFF_NAME                                          DEPT_CODE        
+---------- -------------------------------------------------- ----------        
+       102 Piyush                                                      2        
+       104 Vatsal                                                      4        
+       101 Sanchit                                                     1        
+       103 Riya                                                        3        
+
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+SQL> set wrap off;
+SQL> select * from staff_master where mgr_code is null;
+truncating (as requested) before column DEPT_CODE
+
+rows will be truncated
+
+rows will be truncated
+
+rows will be truncated
+
+rows will be truncated
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE HIREDA
+---------- -------------------------------------------------- ----------- ------
+       103 Riya                                                         3 07-APR
+       104 Vatsal                                                       4 07-APR
+
+SQL> set wrap on;
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+SQL> set linesize 300;
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE  DEPT_CODE HIREDATE  STAFF_DOB                                                                                                                                                                                                    
+---------- -------------------------------------------------- ----------- ---------- --------- ---------                                                                                                                                                                                                    
+STAFF_ADDRESS                                                                                                                                                                                                                                      MGR_CODE  STAFF_SAL                                      
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------- ----------                                      
+       103 Riya                                                         3          3 07-APR-19 21-MAR-96                                                                                                                                                                                                    
+Mumbai                                                                                                                                                                                                                                                          150000                                      
+                                                                                                                                                                                                                                                                                                            
+       104 Vatsal                                                       4          4 07-APR-00 21-MAR-80                                                                                                                                                                                                    
+Pune                                                                                                                                                                                                                                                             25000                                      
+                                                                                                                                                                                                                                                                                                            
+
+SQL> set linesize 500;
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE  DEPT_CODE HIREDATE  STAFF_DOB STAFF_ADDRESS                                                                                                                                                                                                                                      MGR_CODE  STAFF_SAL                                                                                                                                     
+---------- -------------------------------------------------- ----------- ---------- --------- --------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------- ----------                                                                                                                                     
+       103 Riya                                                         3          3 07-APR-19 21-MAR-96 Mumbai                                                                                                                                                                                                                                                          150000                                                                                                                                     
+       104 Vatsal                                                       4          4 07-APR-00 21-MAR-80 Pune                                                                                                                                                                                                                                                             25000                                                                                                                                     
+
+SQL> set linesize 900;
+SQL> select * from staff_master where mgr_code is null;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE  DEPT_CODE HIREDATE  STAFF_DOB STAFF_ADDRESS                                                                                                                                                                                                                                      MGR_CODE  STAFF_SAL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+---------- -------------------------------------------------- ----------- ---------- --------- --------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------- ----------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+       103 Riya                                                         3          3 07-APR-19 21-MAR-96 Mumbai                                                                                                                                                                                                                                                          150000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+       104 Vatsal                                                       4          4 07-APR-00 21-MAR-80 Pune                                                                                                                                                                                                                                                             25000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+
+SQL> 
+SQL> 
+SQL> 
+SQL> insert into book_master(11,'C & Java', 2003,  'Denis Ritchy');
+Enter value for java: ;
+old   1: insert into book_master(11,'C & Java', 2003,  'Denis Ritchy')
+new   1: insert into book_master(11,'C ;', 2003,  'Denis Ritchy')
+insert into book_master(11,'C ;', 2003,  'Denis Ritchy')
+                        *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into book_master values(11,'C & Java', 2003,  'Denis Ritchy');
+Enter value for java: ;
+old   1: insert into book_master values(11,'C & Java', 2003,  'Denis Ritchy')
+new   1: insert into book_master values(11,'C ;', 2003,  'Denis Ritchy')
+
+1 row created.
+
+SQL> insert into book_master values(11,'C & Java', 2003, 'Denis Ritchy');
+Enter value for java: 
+old   1: insert into book_master values(11,'C & Java', 2003, 'Denis Ritchy')
+new   1: insert into book_master values(11,'C ', 2003, 'Denis Ritchy')
+
+1 row created.
+
+SQL> set define off;
+SQL> insert into book_master values(12,'C & Java', 2003, 'Denis Ritchy');
+
+1 row created.
+
+SQL> set define off;
+SQL> insert into book_master values(13,'C++', 2004, 'Sam');
+
+1 row created.
+
+SQL> set define off;
+SQL> insert into book_master values(14,'Python', 2006, 'Python');
+
+1 row created.
+
+SQL> 
+SQL> 
+SQL> select * from book_master where book_pub_year between 2001 and 2004;
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR BOOK_PUB_AUTHOR                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+---------- -------------------------------------------------- ------------- --------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+        11 C ;                                                         2003 Denis Ritchy                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        11 C                                                           2003 Denis Ritchy                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        12 C & Java                                                    2003 Denis Ritchy                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        13 C++                                                         2004 Sam                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+
+SQL> select * from book_master where book_pub_year where book_name like '%&%';
+select * from book_master where book_pub_year where book_name like '%&%'
+                                              *
+ERROR at line 1:
+ORA-00920: invalid relational operator 
+
+
+SQL> select * from book_master where book_name like '%&%';o
+  2  ;
+select * from book_master where book_name like '%&%';o
+                                                    *
+ERROR at line 1:
+ORA-00911: invalid character 
+
+
+SQL> select * from book_master where book_name like '%&%';
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR BOOK_PUB_AUTHOR                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+---------- -------------------------------------------------- ------------- --------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+        12 C & Java                                                    2003 Denis Ritchy                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+SQL> insert into staff_master values(106, 'Stute_Mishra', 5, 5, '07-APR-2015', '21-AUG-1995', 'Gurugram', 5, 250000);
+
+1 row created.
+
+SQL> select staff_name from staff_master where staff_name like '%_%';
+
+STAFF_NAME                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+--------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Sanchit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+Piyush                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+Riya                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+Vatsal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+Stute_Mishra                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+SQL> set define off;
+SQL> select staff_name from staff_master where staff_name like '%_%';
+
+STAFF_NAME                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+--------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Sanchit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+Piyush                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+Riya                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+Vatsal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+Stute_Mishra                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+SQL> select staff_name from staff_master where staff_name like '%$_%';
+
+no rows selected
+
+SQL> select staff_name from staff_master where staff_name like '%\_%';
+
+no rows selected
+
+SQL> select staff_name from staff_master where staff_name like '%[_]%';
+
+no rows selected
+
+SQL> select staff_name from staff_master where staff_name like '%$_%' ESCAPE '$';
+
+STAFF_NAME                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+--------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Stute_Mishra                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+SQL> select staff_name from staff_master where staff_name like '%!_%' ESCAPE '$';
+
+no rows selected
+
+SQL> select staff_name from staff_master where staff_name like '%!_%';
+
+no rows selected
+
+SQL> select staff_name from staff_master where staff_name like '%!_%' escape '!';
+
+STAFF_NAME                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+--------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Stute_Mishra                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> select staff_name,
+  2  LPAD(staff_sal,15, '$') SALARY from staff_master;
+
+STAFF_NAME                                         SALARY                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+-------------------------------------------------- ------------------------------------------------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+Sanchit                                            $$$$$$$$$$15000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Piyush                                             $$$$$$$$$$10000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Riya                                               $$$$$$$$$150000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Vatsal                                             $$$$$$$$$$25000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+Stute_Mishra                                       $$$$$$$$$250000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+SQL> spool off;
+

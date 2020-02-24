@@ -1,0 +1,718 @@
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID                               
+------------------------------ ------- ----------                               
+BOOK_MASTER                    TABLE                                            
+BOOK_TRANSACTIONS              TABLE                                            
+DEPARTMENT_MASTER              TABLE                                            
+DESIGNATION_MASTER             TABLE                                            
+EMP                            TABLE                                            
+STAFF_MASTER                   TABLE                                            
+STUDENT_MARKS                  TABLE                                            
+STUDENT_MASTER                 TABLE                                            
+
+8 rows selected.
+
+SQL> desc staff_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STAFF_CODE                                NOT NULL NUMBER(8)
+ STAFF_NAME                                NOT NULL VARCHAR2(50)
+ DESIGN_CODE                                        NUMBER
+ DEPT_CODE                                          NUMBER
+ HIREDATE                                           DATE
+ STAFF_DOB                                          DATE
+ STAFF_ADDRESS                                      VARCHAR2(240)
+ MGR_CODE                                           NUMBER(8)
+ STAFF_SAL                                          NUMBER(10,2)
+
+SQL> select * from staff_master;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       101 Sanchit                                                      1       
+         1 07-JAN-03 21-MAR-95                                                  
+Delhi                                                                           
+         1      15000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       102 Piyush                                                       2       
+         2 07-JAN-80 21-SEP-98                                                  
+Delhi                                                                           
+         2      10000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       106 Stute_Mishra                                                 5       
+         5 07-APR-15 21-AUG-95                                                  
+Gurugram                                                                        
+         5     250000                                                           
+                                                                                
+
+SQL> select staff_name, LPAD(staff_sal,15,'$') from staff_master;
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+LPAD(STAFF_SAL,15,'$')                                                          
+------------------------------------------------------------                    
+Sanchit                                                                         
+$$$$$$$$$$15000                                                                 
+                                                                                
+Piyush                                                                          
+$$$$$$$$$$10000                                                                 
+                                                                                
+Riya                                                                            
+$$$$$$$$$150000                                                                 
+                                                                                
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+LPAD(STAFF_SAL,15,'$')                                                          
+------------------------------------------------------------                    
+Vatsal                                                                          
+$$$$$$$$$$25000                                                                 
+                                                                                
+Stute_Mishra                                                                    
+$$$$$$$$$250000                                                                 
+                                                                                
+
+SQL> desc student_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_CODE                              NOT NULL NUMBER(6)
+ STUDENT_NAME                              NOT NULL VARCHAR2(50)
+ DEPT_CODE                                          NUMBER(2)
+ STUDENT_DOB                                        DATE
+ STUDENT_ADDRESS                                    VARCHAR2(50)
+
+SQL> select * from student_master;
+
+no rows selected
+
+SQL> insert into student_master values (101, 'Adam', 201, '16-JAN-1999', 'Ghaziabad');
+insert into student_master values (101, 'Adam', 201, '16-JAN-1999', 'Ghaziabad')
+                                                *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> insert into student_master values (101, 'Adam', 20, '16-JAN-1999', 'Ghaziabad');
+
+1 row created.
+
+SQL> insert into student_master values (102, 'Otis', 21, '28-MAR-1999', 'Delhi');
+
+1 row created.
+
+SQL> insert into student_master values (103, 'Eric', 22, '19-FEB-2000', 'Bombay');
+
+1 row created.
+
+SQL> insert into student_master values (104, 'Maven', 23, '17-JAN-2000', 'Noida');
+
+1 row created.
+
+SQL> select * from student_master;
+
+STUDENT_CODE STUDENT_NAME                                        DEPT_CODE      
+------------ -------------------------------------------------- ----------      
+STUDENT_D STUDENT_ADDRESS                                                       
+--------- --------------------------------------------------                    
+         101 Adam                                                       20      
+16-JAN-99 Ghaziabad                                                             
+                                                                                
+         102 Otis                                                       21      
+28-MAR-99 Delhi                                                                 
+                                                                                
+         103 Eric                                                       22      
+19-FEB-00 Bombay                                                                
+                                                                                
+
+STUDENT_CODE STUDENT_NAME                                        DEPT_CODE      
+------------ -------------------------------------------------- ----------      
+STUDENT_D STUDENT_ADDRESS                                                       
+--------- --------------------------------------------------                    
+         104 Maven                                                      23      
+17-JAN-00 Noida                                                                 
+                                                                                
+
+SQL> select stundent_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+  2  where TO_CHAR(student_dob, 'day') LIKE  ('%SATURDAY5') OR TO_CHAR(student_dob, 'day') TO_CHAR('%SUNDAY5');
+where TO_CHAR(student_dob, 'day') LIKE  ('%SATURDAY5') OR TO_CHAR(student_dob, 'day') TO_CHAR('%SUNDAY5')
+                                                                                      *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> select stundent_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+  2  where TO_CHAR(student_dob, 'day') LIKE  ('%SATURDAY5') OR TO_CHAR(student_dob, 'day') like ('%SUNDAY5');
+select stundent_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+       *
+ERROR at line 1:
+ORA-00904: "STUNDENT_NAME": invalid identifier 
+
+
+SQL> select student_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+  2  where TO_CHAR(student_dob, 'day') LIKE  ('%SATURDAY5') OR TO_CHAR(student_dob, 'day') like ('%SUNDAY5');
+
+no rows selected
+
+SQL> select stundent_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master;
+select stundent_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+       *
+ERROR at line 1:
+ORA-00904: "STUNDENT_NAME": invalid identifier 
+
+
+SQL> select student_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master;
+
+STUDENT_NAME                                                                    
+--------------------------------------------------                              
+STUDENT_DOB                                                                     
+--------------------------------------------                                    
+Adam                                                                            
+JANUARY   16 1999                                                               
+                                                                                
+Otis                                                                            
+MARCH     28 1999                                                               
+                                                                                
+Eric                                                                            
+FEBRUARY  19 2000                                                               
+                                                                                
+
+STUDENT_NAME                                                                    
+--------------------------------------------------                              
+STUDENT_DOB                                                                     
+--------------------------------------------                                    
+Maven                                                                           
+JANUARY   17 2000                                                               
+                                                                                
+
+SQL> select student_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master;
+
+STUDENT_NAME                                                                    
+--------------------------------------------------                              
+STUDENT_DOB                                                                     
+--------------------------------------------                                    
+Adam                                                                            
+JANUARY   16 1999                                                               
+                                                                                
+Otis                                                                            
+MARCH     28 1999                                                               
+                                                                                
+Eric                                                                            
+FEBRUARY  19 2000                                                               
+                                                                                
+
+STUDENT_NAME                                                                    
+--------------------------------------------------                              
+STUDENT_DOB                                                                     
+--------------------------------------------                                    
+Maven                                                                           
+JANUARY   17 2000                                                               
+                                                                                
+
+SQL> select student_name, TO_CHAR(student_dob, 'MONTH DD YYYY') as student_dob from student_master
+  2  where TO_CHAR(student_dob, 'day') LIKE  ('%SATURDAY5') OR TO_CHAR(student_dob, 'day') like ('%SUNDAY5');
+
+no rows selected
+
+SQL> 
+SQL> 
+SQL> desc staff_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STAFF_CODE                                NOT NULL NUMBER(8)
+ STAFF_NAME                                NOT NULL VARCHAR2(50)
+ DESIGN_CODE                                        NUMBER
+ DEPT_CODE                                          NUMBER
+ HIREDATE                                           DATE
+ STAFF_DOB                                          DATE
+ STAFF_ADDRESS                                      VARCHAR2(240)
+ MGR_CODE                                           NUMBER(8)
+ STAFF_SAL                                          NUMBER(10,2)
+
+SQL> select * from staff_master;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       101 Sanchit                                                      1       
+         1 07-JAN-03 21-MAR-95                                                  
+Delhi                                                                           
+         1      15000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       102 Piyush                                                       2       
+         2 07-JAN-80 21-SEP-98                                                  
+Delhi                                                                           
+         2      10000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       106 Stute_Mishra                                                 5       
+         5 07-APR-15 21-AUG-95                                                  
+Gurugram                                                                        
+         5     250000                                                           
+                                                                                
+
+SQL> select staff_name, MONTHS_BETWEEN(SYSDATE, HIREDATE) as MONTHS_WORKED from staff_master;
+
+STAFF_NAME                                         MONTHS_WORKED                
+-------------------------------------------------- -------------                
+Sanchit                                               205.498169                
+Piyush                                                481.498169                
+Riya                                                  10.4981694                
+Vatsal                                                238.498169                
+Stute_Mishra                                          58.4981694                
+
+SQL> select staff_name, round(MONTHS_BETWEEN(SYSDATE, HIREDATE)) as MONTHS_WORKED from staff_master;
+
+STAFF_NAME                                         MONTHS_WORKED                
+-------------------------------------------------- -------------                
+Sanchit                                                      205                
+Piyush                                                       481                
+Riya                                                          10                
+Vatsal                                                       238                
+Stute_Mishra                                                  58                
+
+SQL> select * from staff_master where TO_CHAR(hiredate, 'DD') BETWEEN 1 and 15 AND TO_CHAR(hiredate, 'MONTH') like
+  2  '%DECEMBER%';
+
+no rows selected
+
+SQL> select * from stafF_master;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       101 Sanchit                                                      1       
+         1 07-JAN-03 21-MAR-95                                                  
+Delhi                                                                           
+         1      15000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       102 Piyush                                                       2       
+         2 07-JAN-80 21-SEP-98                                                  
+Delhi                                                                           
+         2      10000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       103 Riya                                                         3       
+         3 07-APR-19 21-MAR-96                                                  
+Mumbai                                                                          
+               150000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       104 Vatsal                                                       4       
+         4 07-APR-00 21-MAR-80                                                  
+Pune                                                                            
+                25000                                                           
+                                                                                
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       106 Stute_Mishra                                                 5       
+         5 07-APR-15 21-AUG-95                                                  
+Gurugram                                                                        
+         5     250000                                                           
+                                                                                
+
+SQL> insert into staff_master values (107, 'Holam', 5, 6, '05-DEC-2012', '12-DEC-1994', 'Pune', 1, 1800000);
+
+1 row created.
+
+SQL> select * from staff_master where TO_CHAR(hiredate, 'DD') BETWEEN 1 and 15 AND TO_CHAR(hiredate, 'MONTH') like
+  2  '%DECEMBER%';
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE       
+---------- -------------------------------------------------- -----------       
+ DEPT_CODE HIREDATE  STAFF_DOB                                                  
+---------- --------- ---------                                                  
+STAFF_ADDRESS                                                                   
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL                                                           
+---------- ----------                                                           
+       107 Holam                                                        5       
+         6 05-DEC-12 12-DEC-94                                                  
+Pune                                                                            
+         1    1800000                                                           
+                                                                                
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> desc staff_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STAFF_CODE                                NOT NULL NUMBER(8)
+ STAFF_NAME                                NOT NULL VARCHAR2(50)
+ DESIGN_CODE                                        NUMBER
+ DEPT_CODE                                          NUMBER
+ HIREDATE                                           DATE
+ STAFF_DOB                                          DATE
+ STAFF_ADDRESS                                      VARCHAR2(240)
+ MGR_CODE                                           NUMBER(8)
+ STAFF_SAL                                          NUMBER(10,2)
+
+SQL> s
+SP2-0042: unknown command "s" - rest of line ignored.
+SQL> 
+SQL> 
+SQL> 
+SQL> select staff_name, stafF_sal
+  2  CASE
+  3  when staff_sal >= 50000 then 'A'
+  4  when staff_sal >= 25000 and stafF_sal < 50000 then 'B'
+  5  when staff_sal >=10000 and staff_sal < 25000 then 'C'
+  6  else 'D'
+  7  END CASE
+  8  from staff_master;
+when staff_sal >= 50000 then 'A'
+*
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select staff_name, stafF_sal
+  2  CASE
+  3  when staff_sal >= 50000 then 'A'
+  4  when staff_sal >= 25000 and stafF_sal < 50000 then 'B'
+  5  
+SQL> 
+SQL> 
+SQL> select staff_name, stafF_sal
+  2  CASE
+  3  grade
+  4  when staff_sal >= 50000 then 'A'
+  5  when staff_sal >= 25000 and stafF_sal < 50000 then 'B'
+  6  when staff_sal >=10000 and staff_sal < 25000 then 'C'
+  7  else 'D'
+  8  END CASE
+  9  from staff_master;
+grade
+*
+ERROR at line 3:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> 
+SQL> 
+SQL> SELECT STAFF_NAME,TO_CHAR(HIREDATE,'DD MONTH YYYY') AS HIRE_DATE,TO_CHAR(HIREDATE,'DAY')AS DAY FROM STAFFMASTER ORDER BY TO_CHAR(HIREDATE,'DAY') DESC;
+SELECT STAFF_NAME,TO_CHAR(HIREDATE,'DD MONTH YYYY') AS HIRE_DATE,TO_CHAR(HIREDATE,'DAY')AS DAY FROM STAFFMASTER ORDER BY TO_CHAR(HIREDATE,'DAY') DESC
+                                                                                                    *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT STAFF_NAME, TO_CHAR(HIREDATE,'DD MONTH YYYY') AS HIRE_DATE,TO_CHAR(HIREDATE,'DAY')AS DAY FROM STAFF_MASTER ORDER BY TO_CHAR(HIREDATE,'DAY') DESC;
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+HIRE_DATE                                                                       
+--------------------------------------------                                    
+DAY                                                                             
+------------------------------------                                            
+Holam                                                                           
+05 DECEMBER  2012                                                               
+WEDNESDAY                                                                       
+                                                                                
+Sanchit                                                                         
+07 JANUARY   2003                                                               
+TUESDAY                                                                         
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+HIRE_DATE                                                                       
+--------------------------------------------                                    
+DAY                                                                             
+------------------------------------                                            
+                                                                                
+Stute_Mishra                                                                    
+07 APRIL     2015                                                               
+TUESDAY                                                                         
+                                                                                
+Riya                                                                            
+07 APRIL     2019                                                               
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+HIRE_DATE                                                                       
+--------------------------------------------                                    
+DAY                                                                             
+------------------------------------                                            
+SUNDAY                                                                          
+                                                                                
+Piyush                                                                          
+07 JANUARY   1980                                                               
+MONDAY                                                                          
+                                                                                
+Vatsal                                                                          
+
+STAFF_NAME                                                                      
+--------------------------------------------------                              
+HIRE_DATE                                                                       
+--------------------------------------------                                    
+DAY                                                                             
+------------------------------------                                            
+07 APRIL     2000                                                               
+FRIDAY                                                                          
+                                                                                
+
+6 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> select INSTR('Mississippi', 'i', 2,3) FROM DUAL;
+
+INSTR('MISSISSIPPI','I',2,3)                                                    
+----------------------------                                                    
+                           8                                                    
+
+SQL> 
+SQL> 
+SQL> SELECT TO_CHAR(NEXT_DAY(SYSDATE,'TUESDAY'),'DD MONTH ,YYYY') AS DAY FROM DUAL WHERE NEXT_DAY(SYSDATE,'TUESDAY')<LAST_DAY(SYSDATE);
+
+DAY                                                                             
+---------------------------------------------                                   
+25 FEBRUARY  ,2020                                                              
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> desc student_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_CODE                              NOT NULL NUMBER(6)
+ STUDENT_NAME                              NOT NULL VARCHAR2(50)
+ DEPT_CODE                                          NUMBER(2)
+ STUDENT_DOB                                        DATE
+ STUDENT_ADDRESS                                    VARCHAR2(50)
+
+SQL> desc department_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_CODE                                 NOT NULL NUMBER(2)
+ DPT_NAME                                           VARCHAR2(50)
+
+SQL> select * from student_master;
+
+STUDENT_CODE STUDENT_NAME                                        DEPT_CODE      
+------------ -------------------------------------------------- ----------      
+STUDENT_D STUDENT_ADDRESS                                                       
+--------- --------------------------------------------------                    
+         101 Adam                                                       20      
+16-JAN-99 Ghaziabad                                                             
+                                                                                
+         102 Otis                                                       21      
+28-MAR-99 Delhi                                                                 
+                                                                                
+         103 Eric                                                       22      
+19-FEB-00 Bombay                                                                
+                                                                                
+
+STUDENT_CODE STUDENT_NAME                                        DEPT_CODE      
+------------ -------------------------------------------------- ----------      
+STUDENT_D STUDENT_ADDRESS                                                       
+--------- --------------------------------------------------                    
+         104 Maven                                                      23      
+17-JAN-00 Noida                                                                 
+                                                                                
+
+SQL> select dept_code from studnet_master;
+select dept_code from studnet_master
+                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select dept_code from student_master;
+
+ DEPT_CODE                                                                      
+----------                                                                      
+        20                                                                      
+        21                                                                      
+        22                                                                      
+        23                                                                      
+
+SQL> desc department_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_CODE                                 NOT NULL NUMBER(2)
+ DPT_NAME                                           VARCHAR2(50)
+
+SQL> select * from department_master;
+
+no rows selected
+
+SQL> insert into department_master values
+  2  (20, 'Electronics');
+
+1 row created.
+
+SQL> insert into department_master values
+  2  (21, 'Electricals');
+
+1 row created.
+
+SQL> select * from department_master;
+
+ DEPT_CODE DPT_NAME                                                             
+---------- --------------------------------------------------                   
+        20 Electronics                                                          
+        21 Electricals                                                          
+
+SQL> select s.student_code, s.student_name, d.dpt_name from
+  2  student_master s join department_master d
+  3  where s.deptcode = d.dept_code;
+where s.deptcode = d.dept_code
+*
+ERROR at line 3:
+ORA-00905: missing keyword 
+
+
+SQL> select s.student_code, s.student_name, d.dpt_name from
+  2  student_master s join department_master d
+  3  where s.deptcode = d.dept_code;
+where s.deptcode = d.dept_code
+*
+ERROR at line 3:
+ORA-00905: missing keyword 
+
+
+SQL> spool off;

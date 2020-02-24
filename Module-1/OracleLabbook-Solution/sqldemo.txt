@@ -1,0 +1,1376 @@
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID                               
+------------------------------ ------- ----------                               
+DEPARTMENT                     TABLE                                            
+EMPLOYEE                       TABLE                                            
+JOB                            TABLE                                            
+LOCATION                       TABLE                                            
+
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTCODE                                  NOT NULL VARCHAR2(5)
+ DNAME                                              VARCHAR2(15)
+ LCODE                                              VARCHAR2(5)
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER
+ ENAME                                     NOT NULL VARCHAR2(20)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(10,3)
+ BONUS                                              NUMBER
+ JCODE                                              VARCHAR2(5)
+ DEPTCODE                                           VARCHAR2(5)
+ MGRNO                                              NUMBER
+
+SQL> desc location;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ LCODE                                     NOT NULL VARCHAR2(5)
+ LNAME                                              VARCHAR2(15)
+
+SQL> select ename from employee where deptcode =
+  2  (select deptcode from department where lcode =
+  3  (select lcode from location where lname = 'Chennai'));
+
+no rows selected
+
+SQL> select ename from employee where deptcode =
+  2  (select deptcode from department where lcode =
+  3  (select lcode from location where lname = 'Ghaziabad'));
+(select deptcode from department where lcode =
+ *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename from employee where deptcode =
+  2  (select deptcode from department where lcode =
+  3  (select lcode from location where lname = 'Ghaziabad'));
+(select deptcode from department where lcode =
+ *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename from employee where deptcode =
+  2  (select deptcode from department where lcode in
+  3  (select lcode from location where lname = 'Ghaziabad'));
+(select deptcode from department where lcode in
+ *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename from employee where deptcode =
+  2  (select deptcode from department where lcode = all
+  3  (select lcode from location where lname = 'Ghaziabad'));
+(select deptcode from department where lcode = all
+ *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row 
+
+
+SQL> select ename from employee where deptcode in
+  2  (select deptcode from department where lcode =
+  3  (select lcode from location where lname = 'Ghaziabad'));
+
+ENAME                                                                           
+--------------------                                                            
+SANCHIT                                                                         
+VATSAL                                                                          
+
+SQL> select ename from employee where deptcode = all
+  2  (select deptcode from department where lcode =
+  3  (select lcode from location where lname = 'Ghaziabad'));
+
+no rows selected
+
+SQL> select ename from employee where empno
+  2  in
+  3  (select mgrno from employee
+  4  );
+
+ENAME                                                                           
+--------------------                                                            
+SANCHIT                                                                         
+OSHO                                                                            
+VATSAL                                                                          
+
+SQL> select ename from employee e1 where e1.hiredate <=
+  2  all(select hiredate from employee e2 where
+  3  e1.deptcode = e2.deptcode);
+
+ENAME                                                                           
+--------------------                                                            
+SANCHIT                                                                         
+OSHO                                                                            
+VATSAL                                                                          
+
+SQL> select dname from department d
+  2  where exists
+  3  (select * from employee e where e.deptcode = d.deptcode);
+
+DNAME                                                                           
+---------------                                                                 
+Development                                                                     
+Enterprises                                                                     
+Enterprises                                                                     
+
+SQL> insert into department
+  2  ('70', 'Sales & Marketing', 'l001');
+Enter value for marketing: 
+old   2: ('70', 'Sales & Marketing', 'l001')
+new   2: ('70', 'Sales ', 'l001')
+('70', 'Sales ', 'l001')
+ *
+ERROR at line 2:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> insert into department
+  2  values('70', 'Sales & Marketing', 'l001');
+Enter value for marketing: 
+old   2: values('70', 'Sales & Marketing', 'l001')
+new   2: values('70', 'Sales ', 'l001')
+
+1 row created.
+
+SQL> insert into department
+  2  values('70', 'Sales', 'l001');
+insert into department
+*
+ERROR at line 1:
+ORA-00001: unique constraint (CAP1.SYS_C007001) violated 
+
+
+SQL> select * from department;
+
+DEPTC DNAME           LCODE                                                     
+----- --------------- -----                                                     
+10    Development     l001                                                      
+20    Enterprises     l002                                                      
+30    Enterprises     l001                                                      
+40    Telecome        l003                                                      
+50    Telecome        l004                                                      
+70    Sales           l001                                                      
+
+6 rows selected.
+
+SQL> insert into department
+  2  values('60', 'HR', 'l001');
+
+1 row created.
+
+SQL> select dname from department d
+  2  where exists
+  3  (select * from employee e where e.deptcode = d.deptcode);
+
+DNAME                                                                           
+---------------                                                                 
+Development                                                                     
+Enterprises                                                                     
+Enterprises                                                                     
+
+SQL> select dname from department d
+  2  where not exists
+  3  (select * from employee e where e.deptcode = d.deptcode);
+
+DNAME                                                                           
+---------------                                                                 
+Telecome                                                                        
+Sales                                                                           
+HR                                                                              
+Telecome                                                                        
+
+SQL> 
+SQL> 
+SQL> select * from employee;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101                                                                      
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102                                                                      
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103                                                                      
+                                                                                
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER
+ ENAME                                     NOT NULL VARCHAR2(20)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(10,3)
+ BONUS                                              NUMBER
+ JCODE                                              VARCHAR2(5)
+ DEPTCODE                                           VARCHAR2(5)
+ MGRNO                                              NUMBER
+
+SQL> insert into employees
+  2  values(104, 'Shwetha', '25-JUL-2005', 1500, 'J002', '40', 101);
+insert into employees
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> insert into employee
+  2  values(104, 'Shwetha', '25-JUL-2005', 1500, 'J002', '40', 101);
+insert into employee
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into employee
+  2  values(104, 'Shwetha', '25-JUL-2005',25000, 1500, 'J002', '40', 101);
+insert into employee
+*
+ERROR at line 1:
+ORA-02290: check constraint (CAP1.SYS_C007005) violated 
+
+
+SQL> insert into employee
+  2  values(104, 'SHANU', '25-JUL-2005',25000, 1500, 'J002', '40', 101);
+
+1 row created.
+
+SQL> insert into employee
+  2  values(105, 'SHAMI', '25-JUL-2005',25000, 1500, 'J003', '30', 101);
+
+1 row created.
+
+SQL> select * from employee e where
+  2  exist
+  3  (select e.mgrno = 101);
+(select e.mgrno = 101)
+ *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> select * from employee e where
+  2  
+SQL> select * from employee e where
+  2  exist
+  3  (select empno from employee where e.mgrno = 101);
+(select empno from employee where e.mgrno = 101)
+ *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> select * from employee;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101                                                                      
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102                                                                      
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103                                                                      
+                                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101                                                                      
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101                                                                      
+                                                                                
+
+SQL> insert into employee
+  2  values(106, 'RIYA', '25-JUL-2005',25000, 1500, 'J003', '30', 102);
+
+1 row created.
+
+SQL> select ename from employee e where empno =
+  2  (select ;
+(select 
+ *
+ERROR at line 2:
+ORA-00921: unexpected end of SQL command 
+
+
+SQL> select ename from employee e where mgrno in
+  2  (select empno from employee where ename = 'SANCHIT' or ename = 'OSHO');
+
+ENAME                                                                           
+--------------------                                                            
+SANCHIT                                                                         
+OSHO                                                                            
+SHAMI                                                                           
+SHANU                                                                           
+RIYA                                                                            
+
+SQL> select ename from employee where jcode =
+  2  (select jcode from job where jname='JProgrammer');
+(select jcode from job where jname='JProgrammer')
+                             *
+ERROR at line 2:
+ORA-00904: "JNAME": invalid identifier 
+
+
+SQL> select ename from employee where jcode =
+  2  (select jcode from job where jname='JProgrammer');
+(select jcode from job where jname='JProgrammer')
+                             *
+ERROR at line 2:
+ORA-00904: "JNAME": invalid identifier 
+
+
+SQL> desc job;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ JCODE                                     NOT NULL VARCHAR2(5)
+ JANME                                              VARCHAR2(15)
+
+SQL> alter table job modify column janme to jname;
+alter table job modify column janme to jname
+                                    *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> alter table job modify column janme to column jname;
+alter table job modify column janme to column jname
+                                    *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> alter table job modify janme to column jname;
+alter table job modify janme to column jname
+                             *
+ERROR at line 1:
+ORA-00902: invalid datatype 
+
+
+SQL> alter table job modify janme to column jname varchar(15);
+alter table job modify janme to column jname varchar(15)
+                             *
+ERROR at line 1:
+ORA-00902: invalid datatype 
+
+
+SQL> select ename from employee where jcode =
+  2  (select jcode from job where janme='JProgrammer');
+
+ENAME                                                                           
+--------------------                                                            
+SANCHIT                                                                         
+
+SQL> select ename, hiredate from employee
+  2  wher;
+
+ENAME                HIREDATE                                                   
+-------------------- ---------                                                  
+SANCHIT              12-JAN-20                                                  
+OSHO                 12-JAN-19                                                  
+VATSAL               12-FEB-20                                                  
+SHAMI                25-JUL-05                                                  
+SHANU                25-JUL-05                                                  
+RIYA                 25-JUL-05                                                  
+
+6 rows selected.
+
+SQL> select ename, hiredate from employee
+  2  order by desc
+  3  count 3;
+order by desc
+         *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select ename, hiredate from employee
+  2  order by desc
+  3  limit 3;
+order by desc
+         *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select ename, hiredate from employee
+  2  order by date
+  3  limit 3;
+order by date
+         *
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select ename, hiredate from employee
+  2  order by hiredate desc
+  3  limit3;
+limit3
+*
+ERROR at line 3:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select ename, hiredate from employee
+  2  ;
+
+ENAME                HIREDATE                                                   
+-------------------- ---------                                                  
+SANCHIT              12-JAN-20                                                  
+OSHO                 12-JAN-19                                                  
+VATSAL               12-FEB-20                                                  
+SHAMI                25-JUL-05                                                  
+SHANU                25-JUL-05                                                  
+RIYA                 25-JUL-05                                                  
+
+6 rows selected.
+
+SQL> select ename, hiredate from employee order by hiredate
+  2  where rownum<=3;
+where rownum<=3
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select ename, hiredate from
+  2  (select ename, hiredate from employee order by hiredate)
+  3  where rownum <=3;
+
+ENAME                HIREDATE                                                   
+-------------------- ---------                                                  
+SHAMI                25-JUL-05                                                  
+RIYA                 25-JUL-05                                                  
+SHANU                25-JUL-05                                                  
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> select ename, dname from employee, department;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+SANCHIT              Enterprises                                                
+SANCHIT              Enterprises                                                
+SANCHIT              Telecome                                                   
+SANCHIT              Telecome                                                   
+SANCHIT              Sales                                                      
+SANCHIT              HR                                                         
+OSHO                 Development                                                
+OSHO                 Enterprises                                                
+OSHO                 Enterprises                                                
+OSHO                 Telecome                                                   
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+OSHO                 Telecome                                                   
+OSHO                 Sales                                                      
+OSHO                 HR                                                         
+VATSAL               Development                                                
+VATSAL               Enterprises                                                
+VATSAL               Enterprises                                                
+VATSAL               Telecome                                                   
+VATSAL               Telecome                                                   
+VATSAL               Sales                                                      
+VATSAL               HR                                                         
+SHAMI                Development                                                
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SHAMI                Enterprises                                                
+SHAMI                Enterprises                                                
+SHAMI                Telecome                                                   
+SHAMI                Telecome                                                   
+SHAMI                Sales                                                      
+SHAMI                HR                                                         
+SHANU                Development                                                
+SHANU                Enterprises                                                
+SHANU                Enterprises                                                
+SHANU                Telecome                                                   
+SHANU                Telecome                                                   
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SHANU                Sales                                                      
+SHANU                HR                                                         
+RIYA                 Development                                                
+RIYA                 Enterprises                                                
+RIYA                 Enterprises                                                
+RIYA                 Telecome                                                   
+RIYA                 Telecome                                                   
+RIYA                 Sales                                                      
+RIYA                 HR                                                         
+
+42 rows selected.
+
+SQL> select count(*)  from employee;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         6                                                                      
+
+SQL> select count(*)  from department;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         7                                                                      
+
+SQL> select ename, dname from employee cross join department;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+SANCHIT              Enterprises                                                
+SANCHIT              Enterprises                                                
+SANCHIT              Telecome                                                   
+SANCHIT              Telecome                                                   
+SANCHIT              Sales                                                      
+SANCHIT              HR                                                         
+OSHO                 Development                                                
+OSHO                 Enterprises                                                
+OSHO                 Enterprises                                                
+OSHO                 Telecome                                                   
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+OSHO                 Telecome                                                   
+OSHO                 Sales                                                      
+OSHO                 HR                                                         
+VATSAL               Development                                                
+VATSAL               Enterprises                                                
+VATSAL               Enterprises                                                
+VATSAL               Telecome                                                   
+VATSAL               Telecome                                                   
+VATSAL               Sales                                                      
+VATSAL               HR                                                         
+SHAMI                Development                                                
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SHAMI                Enterprises                                                
+SHAMI                Enterprises                                                
+SHAMI                Telecome                                                   
+SHAMI                Telecome                                                   
+SHAMI                Sales                                                      
+SHAMI                HR                                                         
+SHANU                Development                                                
+SHANU                Enterprises                                                
+SHANU                Enterprises                                                
+SHANU                Telecome                                                   
+SHANU                Telecome                                                   
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SHANU                Sales                                                      
+SHANU                HR                                                         
+RIYA                 Development                                                
+RIYA                 Enterprises                                                
+RIYA                 Enterprises                                                
+RIYA                 Telecome                                                   
+RIYA                 Telecome                                                   
+RIYA                 Sales                                                      
+RIYA                 HR                                                         
+
+42 rows selected.
+
+SQL> select ename, dname from employee inner join department where e.deptcode = d.deptcode;
+select ename, dname from employee inner join department where e.deptcode = d.deptcode
+                                                        *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> select ename, dname from employee e ,department d where e.deptcode = d.deptcode;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+OSHO                 Enterprises                                                
+RIYA                 Enterprises                                                
+SHAMI                Enterprises                                                
+VATSAL               Enterprises                                                
+SHANU                Telecome                                                   
+
+6 rows selected.
+
+SQL> select ename, dname from employee e inner join department d where e.deptcode = d.deptcode;
+select ename, dname from employee e inner join department d where e.deptcode = d.deptcode
+                                                            *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> select ename, dname from employee e left outer join department d where e.deptcode = d.deptcode;
+select ename, dname from employee e left outer join department d where e.deptcode = d.deptcode
+                                                                 *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> select ename, dname from employee e left outer join department d where e.deptcode = d.deptcode;
+select ename, dname from employee e left outer join department d where e.deptcode = d.deptcode
+                                                                 *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> select ename, dname from employee e left outer join department d on where e.deptcode = d.deptcode;
+select ename, dname from employee e left outer join department d on where e.deptcode = d.deptcode
+                                                                    *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select ename, dname from employee e left outer join department d on e.deptcode = d.deptcode;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+OSHO                 Enterprises                                                
+RIYA                 Enterprises                                                
+SHAMI                Enterprises                                                
+VATSAL               Enterprises                                                
+SHANU                Telecome                                                   
+
+6 rows selected.
+
+SQL> select ename, dname from employee e right outer join department d on e.deptcode = d.deptcode;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+OSHO                 Enterprises                                                
+VATSAL               Enterprises                                                
+SHAMI                Enterprises                                                
+SHANU                Telecome                                                   
+RIYA                 Enterprises                                                
+                     Sales                                                      
+                     HR                                                         
+                     Telecome                                                   
+
+9 rows selected.
+
+SQL> select ename, dname from employee e full outer join department d on e.deptcode = d.deptcode;
+
+ENAME                DNAME                                                      
+-------------------- ---------------                                            
+SANCHIT              Development                                                
+OSHO                 Enterprises                                                
+RIYA                 Enterprises                                                
+SHAMI                Enterprises                                                
+VATSAL               Enterprises                                                
+SHANU                Telecome                                                   
+                     Telecome                                                   
+                     Sales                                                      
+                     HR                                                         
+
+9 rows selected.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER
+ ENAME                                     NOT NULL VARCHAR2(20)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(10,3)
+ BONUS                                              NUMBER
+ JCODE                                              VARCHAR2(5)
+ DEPTCODE                                           VARCHAR2(5)
+ MGRNO                                              NUMBER
+
+SQL> select * from employee e1 inner join employee e2 on e1.empno = e2.empno;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101        101 SANCHIT              12-JAN-20    2500000       2500 J001 
+10           101                                                                
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102        102 OSHO                 12-JAN-19      11050       3000 J002 
+20           102                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103        103 VATSAL               12-FEB-20      20000       3500 J003 
+30           103                                                                
+                                                                                
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101        105 SHAMI                25-JUL-05      25000       1500 J003 
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+30           101                                                                
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101        104 SHANU                25-JUL-05      25000       1500 J002 
+40           101                                                                
+                                                                                
+       106 RIYA                 25-JUL-05      25000       1500 J003  30        
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       102        106 RIYA                 25-JUL-05      25000       1500 J003 
+30           102                                                                
+                                                                                
+
+6 rows selected.
+
+SQL> select ename, mgrno  from employee e1 inner join employee e2 on e1.empno = e2.empno;
+select ename, mgrno  from employee e1 inner join employee e2 on e1.empno = e2.empno
+              *
+ERROR at line 1:
+ORA-00918: column ambiguously defined 
+
+
+SQL> select ename from employee e1 inner join employee e2 on e1.empno = e2.empno;
+select ename from employee e1 inner join employee e2 on e1.empno = e2.empno
+       *
+ERROR at line 1:
+ORA-00918: column ambiguously defined 
+
+
+SQL> select ename from employee e1 cross join employee e2 on e1.empno = e2.empno;
+select ename from employee e1 cross join employee e2 on e1.empno = e2.empno
+                                                     *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select * from employee e1 inner join employee e2 on e1.empno = e2.empno;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101        101 SANCHIT              12-JAN-20    2500000       2500 J001 
+10           101                                                                
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102        102 OSHO                 12-JAN-19      11050       3000 J002 
+20           102                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103        103 VATSAL               12-FEB-20      20000       3500 J003 
+30           103                                                                
+                                                                                
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101        105 SHAMI                25-JUL-05      25000       1500 J003 
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+30           101                                                                
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101        104 SHANU                25-JUL-05      25000       1500 J002 
+40           101                                                                
+                                                                                
+       106 RIYA                 25-JUL-05      25000       1500 J003  30        
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       102        106 RIYA                 25-JUL-05      25000       1500 J003 
+30           102                                                                
+                                                                                
+
+6 rows selected.
+
+SQL> select * from employee e1 inner join employee e2 on e1.empno = e2.mgrno;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101        101 SANCHIT              12-JAN-20    2500000       2500 J001 
+10           101                                                                
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102        102 OSHO                 12-JAN-19      11050       3000 J002 
+20           102                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103        103 VATSAL               12-FEB-20      20000       3500 J003 
+30           103                                                                
+                                                                                
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101        105 SHAMI                25-JUL-05      25000       1500 J003 
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+30           101                                                                
+                                                                                
+       101 SANCHIT              12-JAN-20    2500000       2500 J001  10        
+       101        104 SHANU                25-JUL-05      25000       1500 J002 
+40           101                                                                
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO      EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE
+---------- ---------- -------------------- --------- ---------- ---------- -----
+DEPTC      MGRNO                                                                
+----- ----------                                                                
+       102        106 RIYA                 25-JUL-05      25000       1500 J003 
+30           102                                                                
+                                                                                
+
+6 rows selected.
+
+SQL> select e.ename, m.ename from employee e join employee m on e1.empno = e2.mgrno
+  2  ;
+select e.ename, m.ename from employee e join employee m on e1.empno = e2.mgrno
+                                                                      *
+ERROR at line 1:
+ORA-00904: "E2"."MGRNO": invalid identifier 
+
+
+SQL> select e.ename, m.ename from employee e join employee m
+  2  on
+  3  e.empno = m.mgrno;
+
+ENAME                ENAME                                                      
+-------------------- --------------------                                       
+SANCHIT              SANCHIT                                                    
+OSHO                 OSHO                                                       
+VATSAL               VATSAL                                                     
+SANCHIT              SHAMI                                                      
+SANCHIT              SHANU                                                      
+OSHO                 RIYA                                                       
+
+6 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> set autocommit on;
+SQL> 
+SQL> 
+SQL> 
+SQL> update employee set salary=123456 where ename = 'RIYA';
+
+1 row updated.
+
+Commit complete.
+SQL> savepoint s1;
+
+Savepoint created.
+
+SQL> update employee set salary=3500000 where ename = 'SANCHIT';
+
+1 row updated.
+
+Commit complete.
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> ROLLBACK TO SAVEPOINT s1;
+ROLLBACK TO SAVEPOINT s1
+*
+ERROR at line 1:
+ORA-01086: savepoint 'S1' never established in this session or is invalid 
+
+
+SQL> set autocommit off;
+SQL> update employee set salary=123456 where ename = 'RIYA';
+
+1 row updated.
+
+SQL> savepoint s1;
+
+Savepoint created.
+
+SQL> update employee set salary=3500000 where ename = 'SANCHIT';
+
+1 row updated.
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> ROLLBACK TO SAVEPOINT s1;
+
+Rollback complete.
+
+SQL> select * from employee;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       101 SANCHIT              12-JAN-20    3500000       2500 J001  10        
+       101                                                                      
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102                                                                      
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103                                                                      
+                                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101                                                                      
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101                                                                      
+                                                                                
+       106 RIYA                 25-JUL-05     123456       1500 J003  30        
+       102                                                                      
+                                                                                
+
+6 rows selected.
+
+SQL> update employee set salary=1234 where ename = 'RIYA';
+
+1 row updated.
+
+SQL> savepoint ss1;
+
+Savepoint created.
+
+SQL> update employee set salary=5000000 where ename = 'SANCHIT';
+
+1 row updated.
+
+SQL> savepoint ss2;
+
+Savepoint created.
+
+SQL> ROLLBACK TO SAVEPOINT ss1;
+
+Rollback complete.
+
+SQL> select * from employee;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       101 SANCHIT              12-JAN-20    3500000       2500 J001  10        
+       101                                                                      
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102                                                                      
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103                                                                      
+                                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101                                                                      
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101                                                                      
+                                                                                
+       106 RIYA                 25-JUL-05       1234       1500 J003  30        
+       102                                                                      
+                                                                                
+
+6 rows selected.
+
+SQL> select floor(56.23) from dual;
+
+FLOOR(56.23)                                                                    
+------------                                                                    
+          56                                                                    
+
+SQL> select ceil(56.23) from dual;
+
+CEIL(56.23)                                                                     
+-----------                                                                     
+         57                                                                     
+
+SQL> select ceil(56.99) from dual;
+
+CEIL(56.99)                                                                     
+-----------                                                                     
+         57                                                                     
+
+SQL> select floor(56.99) from dual;
+
+FLOOR(56.99)                                                                    
+------------                                                                    
+          56                                                                    
+
+SQL> select sin(30) from dual;
+
+   SIN(30)                                                                      
+----------                                                                      
+-.98803162                                                                      
+
+SQL> select substr(ename, 0, 2) from employee;
+
+SUBSTR(E                                                                        
+--------                                                                        
+SA                                                                              
+OS                                                                              
+VA                                                                              
+SH                                                                              
+SH                                                                              
+RI                                                                              
+
+6 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> desc employee;'
+SP2-0565: Illegal identifier.
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER
+ ENAME                                     NOT NULL VARCHAR2(20)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(10,3)
+ BONUS                                              NUMBER
+ JCODE                                              VARCHAR2(5)
+ DEPTCODE                                           VARCHAR2(5)
+ MGRNO                                              NUMBER
+
+SQL> desc job;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ JCODE                                     NOT NULL VARCHAR2(5)
+ JANME                                              VARCHAR2(15)
+
+SQL> select e.ename, j.janme from employee e join job j on
+  2  e.jcode = j.jcode;
+
+ENAME                JANME                                                      
+-------------------- ---------------                                            
+SANCHIT              JProgrammer                                                
+OSHO                 Test Engineer                                              
+VATSAL               BA                                                         
+SHAMI                BA                                                         
+SHANU                Test Engineer                                              
+RIYA                 BA                                                         
+
+6 rows selected.
+
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTCODE                                  NOT NULL VARCHAR2(5)
+ DNAME                                              VARCHAR2(15)
+ LCODE                                              VARCHAR2(5)
+
+SQL> desc location;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ LCODE                                     NOT NULL VARCHAR2(5)
+ LNAME                                              VARCHAR2(15)
+
+SQL> select d.dname, l.lname from department d join location l on
+  2  d.lcode = l.lcode;
+
+DNAME           LNAME                                                           
+--------------- ---------------                                                 
+Development     Ghaziabad                                                       
+Enterprises     Delhi                                                           
+Enterprises     Ghaziabad                                                       
+Telecome        Bangalore                                                       
+Telecome        Bangalore                                                       
+Sales           Ghaziabad                                                       
+HR              Ghaziabad                                                       
+
+7 rows selected.
+
+SQL> select e.ename, j,janme from employee e join job j join where
+  2  e.deptcode = '30' and e.jcode=j.jcode;
+select e.ename, j,janme from employee e join job j join where
+                                                        *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> select e.ename, j,janme from employee e join job j join on
+  2  e.deptcode = '30' and e.jcode=j.jcode;
+select e.ename, j,janme from employee e join job j join on
+                                                        *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> select e.ename, j,janme from employee e join job j where
+  2  e.deptcode = '30' and e.jcode=j.jcode;
+select e.ename, j,janme from employee e join job j where
+                                                   *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> select e.ename, j,janme from employee e join job j on
+  2  e.jcode=j.jcode and e.deptcode='30';
+select e.ename, j,janme from employee e join job j on
+                *
+ERROR at line 1:
+ORA-00904: "J": invalid identifier 
+
+
+SQL> select e.ename, j,janme from employee e join job j on
+  2  select e.ename, j,janme from employee e join job j on;
+select e.ename, j,janme from employee e join job j on
+*
+ERROR at line 2:
+ORA-00936: missing expression 
+
+
+SQL> select e.ename, j.janme from employee e join job j on
+  2  e.jcode=j.jcode and e.deptcode='30';
+
+ENAME                JANME                                                      
+-------------------- ---------------                                            
+RIYA                 BA                                                         
+SHAMI                BA                                                         
+VATSAL               BA                                                         
+
+SQL> 
+SQL> 
+SQL> 
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER
+ ENAME                                     NOT NULL VARCHAR2(20)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(10,3)
+ BONUS                                              NUMBER
+ JCODE                                              VARCHAR2(5)
+ DEPTCODE                                           VARCHAR2(5)
+ MGRNO                                              NUMBER
+
+SQL> select * from job;
+
+JCODE JANME                                                                     
+----- ---------------                                                           
+J001  JProgrammer                                                               
+J002  Test Engineer                                                             
+J003  BA                                                                        
+J004  Mentor                                                                    
+J005  L and D                                                                   
+
+SQL> Select * from department;
+
+DEPTC DNAME           LCODE                                                     
+----- --------------- -----                                                     
+10    Development     l001                                                      
+20    Enterprises     l002                                                      
+30    Enterprises     l001                                                      
+40    Telecome        l003                                                      
+50    Telecome        l004                                                      
+70    Sales           l001                                                      
+60    HR              l001                                                      
+
+7 rows selected.
+
+SQL> select e.ename, d.dname from employee e join department d
+  2  join job j on (e.jcode = j.jcode and j.janme='JProgrammer');
+join job j on (e.jcode = j.jcode and j.janme='JProgrammer')
+                                                          *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> select e.ename, d.dname from employee e join department d
+  2  join job j on e.jcode = j.jcode and j.janme='JProgrammer';
+join job j on e.jcode = j.jcode and j.janme='JProgrammer'
+                                                        *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> select e.ename, d.dname from employee e join department d
+  2  join job j on e.deptcode = d.deptcode and j.janme='JProgrammer';
+join job j on e.deptcode = d.deptcode and j.janme='JProgrammer'
+                                                              *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> select e.ename, d.dname from employee e join department d
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> select e.ename, d.dname from employee e, department d,
+  2  join j
+  3  where e.deptcode = d.deptcode and j.janme='JProgrammer';r
+  4  ;
+where e.deptcode = d.deptcode and j.janme='JProgrammer';r
+                                                       *
+ERROR at line 3:
+ORA-00911: invalid character 
+
+
+SQL> select e.ename, d.dname from employee e, department d,
+  2  join j
+  3  where e.deptcode = d.deptcode and j.janme='JProgrammer';
+join j
+*
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> select e.ename, d.dname from employee e, department d,
+  2  join job j
+  3  where e.deptcode = d.deptcode and j.janme='JProgrammer';
+join job j
+         *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select ename,max(salary) from employee where ename not like 'A%' group by deptno;
+select ename,max(salary) from employee where ename not like 'A%' group by deptno
+                                                                          *
+ERROR at line 1:
+ORA-00904: "DEPTNO": invalid identifier 
+
+
+SQL> select ename,max(salary) from employee where ename not like 'A%' group by deptcode;
+select ename,max(salary) from employee where ename not like 'A%' group by deptcode
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> select ename,max(salary) from employee where ename not like 'A%' group by deptcode;
+select ename,max(salary) from employee where ename not like 'A%' group by deptcode
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> select avg(salary), count(*) from employee group by deptcode;
+
+AVG(SALARY)   COUNT(*)                                                          
+----------- ----------                                                          
+      11050          1                                                          
+    3500000          1                                                          
+      25000          1                                                          
+ 15411.3333          3                                                          
+
+SQL> select max(salary) from employee where
+  2  salary in
+  3  (select salary from employee MINUS select MAX(salary) from employee);
+
+MAX(SALARY)                                                                     
+-----------                                                                     
+      25000                                                                     
+
+SQL> select * from employee;
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       101 SANCHIT              12-JAN-20    3500000       2500 J001  10        
+       101                                                                      
+                                                                                
+       102 OSHO                 12-JAN-19      11050       3000 J002  20        
+       102                                                                      
+                                                                                
+       103 VATSAL               12-FEB-20      20000       3500 J003  30        
+       103                                                                      
+                                                                                
+
+     EMPNO ENAME                HIREDATE      SALARY      BONUS JCODE DEPTC     
+---------- -------------------- --------- ---------- ---------- ----- -----     
+     MGRNO                                                                      
+----------                                                                      
+       105 SHAMI                25-JUL-05      25000       1500 J003  30        
+       101                                                                      
+                                                                                
+       104 SHANU                25-JUL-05      25000       1500 J002  40        
+       101                                                                      
+                                                                                
+       106 RIYA                 25-JUL-05       1234       1500 J003  30        
+       102                                                                      
+                                                                                
+
+6 rows selected.
+
+SQL> spool off;
