@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drag and Drop HTML API..</title>
+	<style type="text/css">
+		#div1 {
+			  width: 500px;
+			  height: 300px;
+			  padding: 10px;
+			  border: 1px solid #aaaaaa;
+		}
+	</style>
+</head>
+
+<script type="text/javascript">
+	function allowDrop(ev) {
+	  ev.preventDefault();
+	}
+
+	function drag(ev) {
+	  ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+	  ev.preventDefault();
+	  var data = ev.dataTransfer.getData("text");
+	  ev.target.appendChild(document.getElementById(data));
+	}
+</script>
+<body>
+		<h3>Drag the below image in the empty box</h3>
+
+		<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+		<img id="drag1" src="images/drag.jpg" draggable="true" ondragstart="drag(event)" width="500" height="300">
+<br>
+</body>
+</html>

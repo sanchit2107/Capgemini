@@ -1,0 +1,16 @@
+img[title]     { 
+
+	border: 1px solid #000; 
+}
+
+
+img[width]     { 
+
+	border: 1px solid #000; 
+}
+
+
+img[title|="title"] { 
+
+	border: 1px solid #000; 
+}
