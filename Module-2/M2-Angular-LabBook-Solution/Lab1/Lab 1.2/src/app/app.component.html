@@ -1,0 +1,26 @@
+
+<div class="container">
+  <p align="center">Angular 2 Operation</p>
+  <div class="row">
+   <table class="table table-borderless">
+      <tr>
+        <td><label for="id">Id</label></td>
+      <td><input type="number" id="id" placeholder="Enter Id:" name="id" #id></td>
+      </tr>
+     
+      <tr>
+        <td><label for="name">Name</label></td>
+      <td><input type="text" id="id" placeholder="Enter Name:" name="name" #name></td>
+      </tr>
+     
+      <tr><td><label for="sal">Salary</label></td>
+      <td><input type="number" id="sal" placeholder="Enter Salary:" name="salary" #salary></td></tr>
+       <tr><td> <label for="dep">Department</label></td>
+     <td> <input type="text" id="dep" placeholder="Enter Department:" name="department" #dep> </td></tr>
+    
+    <tr><td> <button type="submit" class="btn btn-primary" (click)="getDetails(id,name,salary,dep)">Add Employee</button></td></tr>
+  </table>
+   <p>{{id.value}} {{name.value}} {{salary.value}} {{dep.value}}  </p>
+   </div>
+ </div>
+

@@ -1,0 +1,55 @@
+<div class="container">
+  <p align="center">Angular 2 Operation</p>
+  <div class="row">
+    <h6>ADD EMPLOYEE</h6>
+   <table class="table table-borderless">
+      <tr>
+        <td><label for="id">Id</label></td>
+      <td><input type="number" id="id" placeholder="Enter Id:" name="id"  [(ngModel)]="id" ></td>
+      </tr>
+      
+      <tr>
+        <td><label for="name">Name</label></td>
+      <td><input type="text" id="" placeholder="Enter Name:" name="name"  [(ngModel)]="name"></td>
+      </tr>
+     
+      <tr><td><label for="salary">Salary</label></td>
+      <td><input type="number" id="salary" placeholder="Enter Salary:" name="salary"  [(ngModel)]="salary"></td></tr>
+       <tr><td> <label for="dep">Department</label></td>
+     <td> <input type="text" id="dep" placeholder="Enter Department:" name="dep"  [(ngModel)]="dep"> </td></tr>
+    
+    <tr><td> <button type="submit" class="btn btn-primary" (click)="add()">Add Employee</button></td></tr>
+  </table>
+  </div>
+ </div>
+    <div class="container">
+        <h6>SHOW All EMPLOYEE</h6>
+             <table class="table table-bordered">
+               <tr ><th>ID</th><th>Name</th><th>Salary</th><th>Department</th><th colspan="2" class="text-center">Action</th></tr>
+              <tr *ngFor="let emp of employee"><td>{{emp.id}}</td><td>{{emp.name}}</td><td>{{emp.salary}}</td><td>{{emp.dep}}</td><td><input type="submit" class="btn btn-primary" name="update" value="Update" (click)="update(e.id,e.name,e.salary,e.dep)"></td><td><input type="submit" class="btn btn-primary" name="delete" value="Delete" (click)="delete(emp.id)"></td></tr>
+              </table>
+              <p *ngIf="flag==true">Data Deleted</p>
+       </div>
+<div class="container">
+  <div class="row">
+    <h6>UPDATE EMPLOYEE</h6>
+   <table class="table table-borderless">
+      <tr>
+        <td><label for="id">Id</label></td>
+      <td><input type="number" id="id" placeholder="Enter Id:" name="id"  [(ngModel)]="newid" ></td>
+      </tr>
+      
+      <tr>
+        <td><label for="name">Name</label></td>
+      <td><input type="text" id="name" placeholder="Enter Name:" name="name"  [(ngModel)]="newname"></td>
+      </tr>
+     
+      <tr><td><label for="salary">Salary</label></td>
+      <td><input type="number" id="salary" placeholder="Enter Salary:" name="salary"  [(ngModel)]="newsalary"></td></tr>
+       <tr><td> <label for="dep">Department</label></td>
+     <td> <input type="text" id="dep" placeholder="Enter Department:" name="dep"  [(ngModel)]="newdep"> </td></tr>
+    
+    <tr><td> <button type="submit" class="btn btn-primary" (click)="updateValues(newid,newname,newsalary,newdep)">Sumbit</button></td></tr>
+  </table>
+  </div>
+ </div>

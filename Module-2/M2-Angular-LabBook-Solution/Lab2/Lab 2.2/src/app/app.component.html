@@ -1,0 +1,39 @@
+<div class="p-4">
+	<h2>Angular Operations</h2>
+
+	<div class="form-group">
+		<select class="custom-select" [(ngModel)]="order">
+    <option value="empId">ID</option>
+    <option value="empName">NAME</option>
+	<option value="empSal">SALARY</option>
+	<option value="empDep">DEPARTMENT</option>
+  </select>
+	</div>
+	<div class="form-group">
+		<div class="custom-control custom-checkbox">
+			<input type="checkbox" class="custom-control-input" [(ngModel)]="reverse" id="reverse" />
+			<label class="custom-control-label" for="reverse">reverse</label>
+		</div>
+	</div>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NAME</th>
+				<th>SALARY</th>
+				<th>DEPARTMENT</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr *ngFor="let item of items | myorder : order : reverse">
+				<td>{{item.empId}}</td>
+				<td>{{item.empName}}</td>
+				<td>{{item.empSal}}</td>
+				<td>{{item.empDep}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

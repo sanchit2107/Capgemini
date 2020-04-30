@@ -1,0 +1,38 @@
+<table border="1">
+    <tr>
+        <th>Id</th>
+      <th> Title  </th>
+      <th> Year  </th>
+      <th> Author  </th>
+ </tr>
+
+
+ <tr>
+  <td>
+    <input type="number" name="bookid" ngModel #idCtrl=ngModel (keyup)="filterById(idCtrl.value)" > 
+
+  </td>
+  <td>
+    <input type="text" name="title" ngModel #titleCtrl=ngModel (keyup)="filterByTitle(titleCtrl.value)" >
+
+  </td>
+  <td>
+    <input type="number" name="year"  ngModel #yearCtrl=ngModel (keyup)="filterByYear(yearCtrl.value)" >
+
+  </td>
+  <td>
+    <input type="text" name="author"  ngModel #authorCtrl=ngModel (keyup)="filterByAuthor(authorCtrl.value)" >
+
+  </td>
+</tr> 
+
+
+<tr *ngFor="let book of books">
+   <td>{{book.id}}</td> 
+   <td>{{ book.title}}</td>
+   <td>{{ book.year}}</td>
+   <td>{{ book.author}}</td> 
+ </tr>
+ 
+ </table>
+ 
