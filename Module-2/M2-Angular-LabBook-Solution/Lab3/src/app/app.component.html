@@ -1,0 +1,60 @@
+  <form #prodForm="ngForm" (ngSubmit)="saveForm(prodForm)">
+     <table class="table table-borderless">
+     <div class="form-group">
+      <tr>
+        <td><label for="pid">Product Id</label></td>&nbsp;&nbsp;&nbsp;
+      <td> <div class="col"><input type="number" id="pid" name="pid" #pid="ngModel" class="form-control" ngModel required>
+      <span class="alert alert-danger" *ngIf="pid.touched && !pid.valid">This field is required</span></div>
+      </td>
+      </tr>
+     </div>
+
+      <div class="form-group"><tr>
+        <td><label for="pname">Product Name</label></td>
+      <td><input type="text" name="pname" id="pname" #pname="ngModel" class="form-control"
+        required ngModel>
+      <span class="alert alert-danger" *ngIf="pname.touched && !pname.valid">This field is required</span></td>
+      </tr></div>
+
+      <div class="form-group"><tr>
+        <td><label for="cost">Product Cost</label></td>&nbsp;&nbsp;
+      <td><input type="number" name="cost" #cost="ngModel" id="cost" class="form-control" required ngModel>
+       <span class="alert alert-danger" *ngIf="cost.touched && !cost.valid">This field is required</span></td>
+      </tr></div>
+
+      <div class="form-group form-row"><tr><td>
+        <label for="prodonline">Product Online</label></td>
+        <td><div class="form-check-inline">
+             <input type="radio" id="prodonline" name="prodonline" class="form-check-input" value="Yes" required ngModel/>
+             <label class="form-check-label">Yes</label>
+             </div>
+            <div class="form-check-inline">
+             <input type="radio" id="prodonline" name="prodonline" class="form-check-input" value="No" required ngModel/>
+             <label class="form-check-label">No</label>
+             </div> 
+        </td></tr>
+      </div>
+
+      <div class="form-group"><tr><td>
+        <label for="prodCategory">Product Category</label></td>
+        <td><select name="prodCategory" class="form-control" id="prodCategory" #prodCategory="ngModel" required ngModel>
+          <option>Select Category</option>
+          <option *ngFor="let c of category">{{c}}</option></select></td></tr>
+      </div>
+
+      <div class="form-group"><tr><td>
+         <label for="stores">Available in Stores</label>
+         <td *ngFor="let s of stores"><input type="checkbox" name="stores" #stores="ngModel" (onchange)="check(event)" required ngModel>{{s}}</td></tr>
+      </div>
+ 
+      <tr><td><button type="submit" class="btn btn-primary">Add Product</button></td></tr>
+    
+  </table>
+  </form>
+  <div><p>{{msg}}</p><br><p>{{prodForm.value|json}}</p></div>
+  
+ 
+  
+  
+ 
+ 
